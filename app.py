@@ -4,7 +4,7 @@ RAG Document Chatbot — Gradio interface.
 Upload a PDF or TXT file, then ask questions about it.
 Answers are grounded in the document — no hallucination.
 
-Requires: OPENAI_API_KEY environment variable
+Requires: HF_TOKEN environment variable (HuggingFace token — free)
 """
 
 import os
@@ -68,7 +68,7 @@ with gr.Blocks(theme=gr.themes.Soft(), title="RAG Document Chatbot") as demo:
         Upload a **PDF or TXT** document, then ask questions about it.
         Answers are grounded in your document — not general knowledge.
 
-        > **Requires:** `OPENAI_API_KEY` set as an environment variable or Space secret.
+        > Powered by **Mistral-7B** via HuggingFace Inference API — completely free.
         """
     )
 

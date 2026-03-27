@@ -12,7 +12,7 @@ pinned: false
 
 # 📄 RAG Document Chatbot
 
-A **Retrieval-Augmented Generation (RAG)** chatbot — upload any PDF or text document and ask questions about it. Answers are grounded in your document, not general knowledge.
+A **Retrieval-Augmented Generation (RAG)** chatbot — upload any PDF or text document and ask questions about it. Answers are grounded in your document, not general knowledge. **Completely free** — no OpenAI key needed.
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
 ![LangChain](https://img.shields.io/badge/LangChain-0.2+-1C3C3C?logo=langchain&logoColor=white)
@@ -22,15 +22,13 @@ A **Retrieval-Augmented Generation (RAG)** chatbot — upload any PDF or text do
 ## 🚀 Live Demo
 
 > 🔗 **[Try it on Hugging Face Spaces →](https://huggingface.co/spaces/bytemeuk/rag-doc-chatbot)**
->
-> Requires an `OPENAI_API_KEY` Space secret to be set.
 
 ## ✨ Features
 
 - **Upload PDF or TXT** documents
 - **Grounded answers** — only uses content from your document
-- **Conversational memory** — follow-up questions work naturally
-- **Free embeddings** — sentence-transformers runs on CPU, no API key needed
+- **Completely free** — Mistral-7B via HuggingFace Inference API, no paid keys
+- **Free embeddings** — sentence-transformers runs on CPU
 - **Source-faithful** — answers "I couldn't find that" if not in the document
 
 ## 🧠 How RAG Works
@@ -38,13 +36,13 @@ A **Retrieval-Augmented Generation (RAG)** chatbot — upload any PDF or text do
 ```
 Your document
     └─▶ Split into ~800 char chunks (RecursiveCharacterTextSplitter)
-            └─▶ Embed each chunk (sentence-transformers/all-MiniLM-L6-v2)
+            └─▶ Embed each chunk (sentence-transformers/all-MiniLM-L6-v2, free)
                     └─▶ Store in FAISS vector index
 
 Your question
     └─▶ Embed question (same model)
             └─▶ Find top-4 most similar chunks (cosine similarity)
-                    └─▶ Feed chunks + question to GPT-3.5-turbo
+                    └─▶ Feed chunks + question to Mistral-7B (free via HF API)
                             └─▶ Answer grounded in document context
 ```
 
@@ -56,7 +54,7 @@ Your question
 | LangChain | RAG orchestration (LCEL chain) |
 | FAISS | Vector similarity search |
 | sentence-transformers | Free CPU embeddings (`all-MiniLM-L6-v2`) |
-| OpenAI `gpt-3.5-turbo` | Answer generation |
+| Mistral-7B-Instruct | Answer generation (free via HF Inference API) |
 | Gradio | Web interface |
 | Hugging Face Spaces | Deployment |
 
@@ -69,7 +67,7 @@ cd rag-doc-chatbot
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 
-export OPENAI_API_KEY=sk-...
+export HF_TOKEN=hf_...   # your HuggingFace token (free)
 python app.py
 ```
 
@@ -94,9 +92,11 @@ rag-doc-chatbot/
 ## 🚢 Deployment (HuggingFace Spaces)
 
 1. Create a Space at [huggingface.co/new-space](https://huggingface.co/new-space) → SDK: **Gradio**
-2. Add `OPENAI_API_KEY` as a Space secret (Settings → Variables and secrets)
-3. Add `HFTOKEN` to GitHub repo secrets
-4. Push to `main` — GitHub Action syncs to HF automatically
+2. Add `HFTOKEN` to GitHub repo secrets (for the sync Action)
+3. Add `HF_TOKEN` as a **Space secret** → Settings → Variables and secrets
+4. Push to `main` — GitHub Action syncs automatically
+
+> `HF_TOKEN` and `HFTOKEN` are the **same token** — just two different names for two different systems.
 
 ## 📄 License
 
