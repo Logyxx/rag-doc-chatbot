@@ -21,7 +21,7 @@ A **Retrieval-Augmented Generation (RAG)** chatbot — upload any PDF or text do
 
 ## 🚀 Live Demo
 
-> 🔗 **[Try it on Hugging Face Spaces →](https://huggingface.co/spaces/bytemeuk/rag-doc-chatbot)**
+> 🔗 **[Try it on Hugging Face Spaces →](https://huggingface.co/spaces/lakshmenroy/rag-doc-chatbot)**
 
 ## ✨ Features
 
