@@ -86,7 +86,7 @@ with gr.Blocks(theme=gr.themes.Soft(), title="RAG Document Chatbot") as demo:
             )
 
         with gr.Column(scale=2):
-            chatbot = gr.Chatbot(label="Chat", height=420)
+            chatbot = gr.Chatbot(label="Chat", height=420, type="tuples")
             with gr.Row():
                 question_box = gr.Textbox(
                     placeholder="Ask a question about your document...",
