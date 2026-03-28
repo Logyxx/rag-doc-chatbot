@@ -3,6 +3,10 @@ name: Sync to Hugging Face Spaces
 on:
   push:
     branches: [main]
+    paths:
+      - 'app.py'
+      - 'requirements.txt'
+      - 'rag/**'
   workflow_dispatch:
 
 jobs:
