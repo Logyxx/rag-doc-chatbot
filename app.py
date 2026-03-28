@@ -114,5 +114,4 @@ with gr.Blocks(theme=gr.themes.Soft(), title="RAG Document Chatbot") as demo:
         "[ByteMe-UK](https://github.com/ByteMe-UK) portfolio"
     )
 
-if __name__ == "__main__":
-    demo.launch()
+demo.launch()
