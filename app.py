@@ -4,7 +4,7 @@ RAG Document Chatbot — Gradio interface.
 Upload a PDF or TXT file, then ask questions about it.
 Answers are grounded in the document — no hallucination.
 
-Requires: HF_TOKEN environment variable (HuggingFace token — free)
+Requires: GROQ_API_KEY environment variable (free at console.groq.com)
 """
 
 import os
@@ -47,7 +47,8 @@ def answer_question(question: str, history: list) -> tuple[str, list]:
         return "", history
 
     if _chain is None:
-        history.append((question, "Please upload a document first."))
+        history.append({"role": "user", "content": question})
+        history.append({"role": "assistant", "content": "Please upload a document first."})
         return "", history
 
     try:
@@ -55,7 +56,8 @@ def answer_question(question: str, history: list) -> tuple[str, list]:
     except Exception as e:
         answer = f"❌ Error: {e}"
 
-    history.append((question, answer))
+    history.append({"role": "user", "content": question})
+    history.append({"role": "assistant", "content": answer})
     return "", history
 
 
@@ -86,7 +88,7 @@ with gr.Blocks(theme=gr.themes.Soft(), title="RAG Document Chatbot") as demo:
             )
 
         with gr.Column(scale=2):
-            chatbot = gr.Chatbot(label="Chat", height=420, type="tuples")
+            chatbot = gr.Chatbot(label="Chat", height=420, type="messages")
             with gr.Row():
                 question_box = gr.Textbox(
                     placeholder="Ask a question about your document...",
@@ -114,5 +116,5 @@ with gr.Blocks(theme=gr.themes.Soft(), title="RAG Document Chatbot") as demo:
         "[Logyxx](https://github.com/Logyxx) portfolio"
     )
 
-demo.launch()
+demo.launch(show_api=False)
 
