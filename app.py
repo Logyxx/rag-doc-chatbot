@@ -111,7 +111,7 @@ with gr.Blocks(theme=gr.themes.Soft(), title="RAG Document Chatbot") as demo:
 
     gr.Markdown(
         "---\nBuilt by [Laksh Menroy](https://github.com/lakshmenroy) · "
-        "[ByteMe-UK](https://github.com/ByteMe-UK) portfolio"
+        "[Logyxx](https://github.com/Logyxx) portfolio"
     )
 
 demo.launch()
