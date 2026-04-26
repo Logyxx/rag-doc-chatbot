@@ -2,33 +2,28 @@
 RAG chain: embeddings → FAISS vector store → retrieval → LLM answer.
 
 Embeddings: sentence-transformers/all-MiniLM-L6-v2  (free, CPU, ~90MB)
-LLM:        Zephyr-7B-Beta via HuggingFace Inference API (free with HF account)
-
-Both use the same HF_TOKEN — no OpenAI key needed.
+LLM:        Llama 3 via Groq API (free tier)
 """
 
 import os
 
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEndpoint
-from langchain_core.prompts import PromptTemplate
+from langchain_groq import ChatGroq
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-LLM_MODEL   = "HuggingFaceH4/zephyr-7b-beta"
 
-PROMPT_TEMPLATE = """\
-<|system|>
-You are a helpful assistant. Answer the question using ONLY the context below.
+RAG_PROMPT = ChatPromptTemplate.from_messages([
+    ("system", """You are a helpful assistant. Answer the question using ONLY the context below.
 If the answer is not in the context, say "I couldn't find that in the document."
 
 Context:
-{context}</s>
-<|user|>
-{question}</s>
-<|assistant|>"""
+{context}"""),
+    ("human", "{question}"),
+])
 
 
 def _get_embeddings() -> HuggingFaceEmbeddings:
@@ -46,31 +41,28 @@ def build_vectorstore(docs: list) -> FAISS:
 
 def build_chain(vectorstore: FAISS):
     """
-    Build the RAG chain using HuggingFace Inference API (free).
-    Requires HF_TOKEN environment variable (same token used for deployment).
+    Build the RAG chain using Groq API (free).
+    Requires GROQ_API_KEY environment variable.
     """
-    hf_token = os.getenv("HF_TOKEN")
-    if not hf_token:
+    if not os.getenv("GROQ_API_KEY"):
         raise EnvironmentError(
-            "HF_TOKEN is not set. Add it as a HuggingFace Space secret."
+            "GROQ_API_KEY is not set. Add it as a HuggingFace Space secret."
         )
 
-    llm = HuggingFaceEndpoint(
-        repo_id=LLM_MODEL,
-        task="text-generation",
-        max_new_tokens=512,
+    llm = ChatGroq(
+        model="llama3-8b-8192",
         temperature=0.1,
+        max_tokens=512,
     )
 
     retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
-    prompt    = PromptTemplate.from_template(PROMPT_TEMPLATE)
 
     def format_docs(docs):
         return "\n\n".join(d.page_content for d in docs)
 
     chain = (
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
-        | prompt
+        | RAG_PROMPT
         | llm
         | StrOutputParser()
     )
