@@ -16,7 +16,7 @@ A **Retrieval-Augmented Generation (RAG)** chatbot — upload any PDF or text do
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
 ![LangChain](https://img.shields.io/badge/LangChain-0.2+-1C3C3C?logo=langchain&logoColor=white)
-![Gradio](https://img.shields.io/badge/Gradio-4.0+-FF7C00?logo=gradio&logoColor=white)
+![Gradio](https://img.shields.io/badge/Gradio-5.9+-FF7C00?logo=gradio&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## 🚀 Live Demo
@@ -27,7 +27,7 @@ A **Retrieval-Augmented Generation (RAG)** chatbot — upload any PDF or text do
 
 - **Upload PDF or TXT** documents
 - **Grounded answers** — only uses content from your document
-- **Completely free** — Mistral-7B via HuggingFace Inference API, no paid keys
+- **Completely free** — Zephyr-7B via HuggingFace Inference API, no paid keys
 - **Free embeddings** — sentence-transformers runs on CPU
 - **Source-faithful** — answers "I couldn't find that" if not in the document
 
@@ -42,7 +42,7 @@ Your document
 Your question
     └─▶ Embed question (same model)
             └─▶ Find top-4 most similar chunks (cosine similarity)
-                    └─▶ Feed chunks + question to Mistral-7B (free via HF API)
+                    └─▶ Feed chunks + question to Zephyr-7B (free via HF API)
                             └─▶ Answer grounded in document context
 ```
 
@@ -54,14 +54,14 @@ Your question
 | LangChain | RAG orchestration (LCEL chain) |
 | FAISS | Vector similarity search |
 | sentence-transformers | Free CPU embeddings (`all-MiniLM-L6-v2`) |
-| Mistral-7B-Instruct | Answer generation (free via HF Inference API) |
+| Zephyr-7B-Beta | Answer generation (free via HF Inference API) |
 | Gradio | Web interface |
 | Hugging Face Spaces | Deployment |
 
 ## 📦 Getting Started
 
 ```bash
-git clone https://github.com/ByteMe-UK/rag-doc-chatbot.git
+git clone https://github.com/Logyxx/rag-doc-chatbot.git
 cd rag-doc-chatbot
 
 python3 -m venv venv && source venv/bin/activate
@@ -104,4 +104,4 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-**Part of the [ByteMe-UK](https://github.com/ByteMe-UK) portfolio collection.**
+**Part of the [Logyxx](https://github.com/Logyxx) portfolio collection.**
