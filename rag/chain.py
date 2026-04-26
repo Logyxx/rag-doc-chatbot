@@ -2,7 +2,7 @@
 RAG chain: embeddings → FAISS vector store → retrieval → LLM answer.
 
 Embeddings: sentence-transformers/all-MiniLM-L6-v2  (free, CPU, ~90MB)
-LLM:        Mistral-7B-Instruct via HuggingFace Inference API (free with HF account)
+LLM:        Zephyr-7B-Beta via HuggingFace Inference API (free with HF account)
 
 Both use the same HF_TOKEN — no OpenAI key needed.
 """
@@ -17,15 +17,18 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-LLM_MODEL   = "mistralai/Mistral-7B-Instruct-v0.2"
+LLM_MODEL   = "HuggingFaceH4/zephyr-7b-beta"
 
-PROMPT_TEMPLATE = """<s>[INST] You are a helpful assistant. Answer the question using ONLY the context below.
+PROMPT_TEMPLATE = """\
+<|system|>
+You are a helpful assistant. Answer the question using ONLY the context below.
 If the answer is not in the context, say "I couldn't find that in the document."
 
 Context:
-{context}
-
-Question: {question} [/INST]"""
+{context}</s>
+<|user|>
+{question}</s>
+<|assistant|>"""
 
 
 def _get_embeddings() -> HuggingFaceEmbeddings:
@@ -54,11 +57,9 @@ def build_chain(vectorstore: FAISS):
 
     llm = HuggingFaceEndpoint(
         repo_id=LLM_MODEL,
-        huggingfacehub_api_token=hf_token,
         task="text-generation",
         max_new_tokens=512,
         temperature=0.1,
-        do_sample=False,
     )
 
     retriever = vectorstore.as_retriever(search_kwargs={"k": 4})

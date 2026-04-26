@@ -68,7 +68,7 @@ with gr.Blocks(theme=gr.themes.Soft(), title="RAG Document Chatbot") as demo:
         Upload a **PDF or TXT** document, then ask questions about it.
         Answers are grounded in your document — not general knowledge.
 
-        > Powered by **Mistral-7B** via HuggingFace Inference API — completely free.
+        > Powered by **Zephyr-7B** via HuggingFace Inference API — completely free.
         """
     )
 
